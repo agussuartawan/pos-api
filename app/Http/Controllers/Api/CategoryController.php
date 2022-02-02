@@ -34,7 +34,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $messages =['name.required' => 'Kolom nama tidak boleh kosong'];
+        $messages = ['name.required' => 'Kolom nama tidak boleh kosong'];
         $validator = Validator::make($request->all(), [
             'name' => 'required'
         ], $messages);
@@ -51,12 +51,11 @@ class CategoryController extends Controller
             ];
 
             return response()->json($response, 201);
-        } catch(QueryException $e) {
+        } catch (QueryException $e) {
             return response()->json([
                 'message' => 'Gagal ' . $e->errorInfo
             ]);
         }
-
     }
 
     /**
@@ -65,12 +64,11 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Category $category)
     {
-        $categories = Category::findOrFail($id)->get();
         $response = [
             'title' => 'List Kategori Produk',
-            'data' => $categories
+            'data' => $category
         ];
 
         return response()->json($response, 200);
@@ -83,9 +81,9 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Category $category)
     {
-        $messages =['name.required' => 'Kolom nama tidak boleh kosong'];
+        $messages = ['name.required' => 'Kolom nama tidak boleh kosong'];
         $validator = Validator::make($request->all(), [
             'name' => 'required'
         ], $messages);
@@ -95,7 +93,6 @@ class CategoryController extends Controller
         }
 
         try {
-            $category = findOrFail($id)->get();
             $category->update($request->all());
             $response = [
                 'title' => 'Data Kategori berhasil diubah',
@@ -103,7 +100,7 @@ class CategoryController extends Controller
             ];
 
             return response()->json($response, 200);
-        } catch(QueryException $e) {
+        } catch (QueryException $e) {
             return response()->json([
                 'message' => 'Gagal ' . $e->errorInfo
             ]);
@@ -116,9 +113,8 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Category $category)
     {
-        $category = Category::findOrFail($id)->get();
         try {
             $category->delete();
             $response = [
@@ -126,7 +122,7 @@ class CategoryController extends Controller
             ];
 
             return response()->json($response, 200);
-        } catch(QueryException $e) {
+        } catch (QueryException $e) {
             return response()->json([
                 'message' => 'Gagal ' . $e->errorInfo
             ]);
